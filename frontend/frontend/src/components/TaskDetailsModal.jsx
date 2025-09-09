@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../styles/TaskDetailsModal.css';
+import API from '../api'
 
 const TaskDetailsModal = ({ task, onClose, token, refreshTasks, user }) => {
   const [title, setTitle] = useState(task.title);
@@ -9,8 +10,10 @@ const TaskDetailsModal = ({ task, onClose, token, refreshTasks, user }) => {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(
-        `http://localhost:5000/api/tasks/${task._id}`,
+      // await axios.put(
+      await API.put(
+        // `http://localhost:5000/api/tasks/${task._id}`,
+        `/tasks/${task._id}`,
         {
           title,
           description,

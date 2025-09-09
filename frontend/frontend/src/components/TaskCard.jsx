@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/TaskCard.css";
+import API from '../api'
 
 const TaskCard = ({ task, user, token, onDragStart, column, onCardClick }) => {
   const [users, setUsers] = useState([]);
@@ -9,7 +10,8 @@ const TaskCard = ({ task, user, token, onDragStart, column, onCardClick }) => {
   useEffect(() => {
     if (user.role === "admin") {
       const fetchUsers = async () => {
-        const res = await axios.get("http://localhost:5000/api/auth/users", {
+        // const res = await axios.get("http://localhost:5000/api/auth/users", {
+        const res = await API.get("/auth/users", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsers(res.data);
@@ -35,15 +37,18 @@ const TaskCard = ({ task, user, token, onDragStart, column, onCardClick }) => {
     );
 
     if (!confirmDelete) return; // Cancel deletion if user clicks "No"
-    await axios.delete(`http://localhost:5000/api/tasks/${task._id}`, {
+    // await axios.delete(`http://localhost:5000/api/tasks/${task._id}`, {
+    await API.delete(`/tasks/${task._id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
   };
 
   const handleSmartAssign = async (e) => {
     e.stopPropagation(); // Prevent card click
-    await axios.post(
-      `http://localhost:5000/api/tasks/smart-assign/${task._id}`,
+    // await axios.post(
+    await API.post(
+      // `http://localhost:5000/api/tasks/smart-assign/${task._id}`,
+      `/tasks/smart-assign/${task._id}`,
       {},
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -54,8 +59,10 @@ const TaskCard = ({ task, user, token, onDragStart, column, onCardClick }) => {
 
     const newUserId = e.target.value;
     try {
-      await axios.put(
-        `http://localhost:5000/api/tasks/${task._id}`,
+      // await axios.put(
+      await API.put(
+        // `http://localhost:5000/api/tasks/${task._id}`,
+        `/tasks/${task._id}`,
         {
           assignedTo: newUserId,
           updatedAt: task.updatedAt,
@@ -70,8 +77,10 @@ const TaskCard = ({ task, user, token, onDragStart, column, onCardClick }) => {
   };
 
   const handleClaimTask = async () => {
-    await axios.post(
-      `http://localhost:5000/api/tasks/claim/${task._id}`,
+    // await axios.post(
+    await API.post(
+      // `http://localhost:5000/api/tasks/claim/${task._id}`,
+      `/tasks/claim/${task._id}`,
       {},
       { headers: { Authorization: `Bearer ${token}` } }
     );

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "../styles/TaskForm.css";
+import API from '../api'
 
 const TaskForm = ({ token, onClose, refreshTasks }) => {
   const [title, setTitle] = useState("");
@@ -9,8 +10,10 @@ const TaskForm = ({ token, onClose, refreshTasks }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await axios.post(
-      "http://localhost:5000/api/tasks",
+    // await axios.post(
+    await API.post(
+      // "http://localhost:5000/api/tasks",
+      `/tasks`,
       { title, description, status: "Todo" },
       { headers: { Authorization: `Bearer ${token}` } }
     );

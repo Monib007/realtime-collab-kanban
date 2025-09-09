@@ -10,6 +10,8 @@ import TaskDetailsModal from "./TaskDetailsModal";
 import TopBar from "./TopBar";
 
 import "../styles/KanbanBoard.css";
+import API from '../api'
+import socket from "../socket";
 
 const KanbanBoard = () => {
   const { token, user, logout } = useContext(AuthContext);
@@ -23,18 +25,20 @@ const KanbanBoard = () => {
   const [serverTask, setServerTask] = useState(null);
 
   const fetchTasks = async () => {
-    const res = await axios.get("http://localhost:5000/api/tasks", {
+    // const res = await axios.get("http://localhost:5000/api/tasks", {
+    const res = await API.get("/tasks", {
       headers: { Authorization: `Bearer ${token}` },
     });
     setTasks(res.data);
   };
 
   useEffect(() => {
-    const socket = io("http://localhost:5000");
+    // const socket = io("http://localhost:5000");
     fetchTasks();
 
     const fetchActivity = async () => {
-      const res = await axios.get("http://localhost:5000/api/tasks/actions", {
+      // const res = await axios.get("http://localhost:5000/api/tasks/actions", {
+      const res = await API.get("/tasks/actions", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setActivity(res.data);
@@ -91,8 +95,10 @@ const KanbanBoard = () => {
 
     if (task.status !== newStatus) {
       try {
-        await axios.put(
-          `http://localhost:5000/api/tasks/${taskId}`,
+        // await axios.put(
+        await API.post(
+          // `http://localhost:5000/api/tasks/${taskId}`,
+          `/tasks/${taskId}`,
           {
             status: newStatus,
             updatedAt: task.updatedAt,
@@ -112,8 +118,10 @@ const KanbanBoard = () => {
 
   const handleMerge = async (mergedTask) => {
     try {
-      await axios.put(
-        `http://localhost:5000/api/tasks/${mergedTask._id}`,
+      // await axios.put(
+      await API.put(
+        // `http://localhost:5000/api/tasks/${mergedTask._id}`,
+        `/tasks/${mergedTask._id}`,
         {
           ...mergedTask,
           updatedAt: serverTask.updatedAt,
@@ -130,8 +138,10 @@ const KanbanBoard = () => {
 
   const handleOverwrite = async () => {
     try {
-      await axios.put(
-        `http://localhost:5000/api/tasks/${conflictTask._id}`,
+      // await axios.put(
+      await API.put(
+        // `http://localhost:5000/api/tasks/${conflictTask._id}`,
+        `/tasks/${conflictTask._id}`,
         {
           ...conflictTask,
           updatedAt: serverTask.updatedAt,

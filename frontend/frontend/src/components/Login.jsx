@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from '../context/AuthContext';
 import '../styles/Auth.css';
+import API from '../api'
 
 const Login = ({ setShowLogin }) => {
   const [email, setEmail] = useState("");
@@ -14,7 +15,8 @@ const Login = ({ setShowLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      // const res = await axios.post("http://localhost:5000/api/auth/login", {
+      const res = await API.post("/auth/login", {
         email,
         password,
         role,

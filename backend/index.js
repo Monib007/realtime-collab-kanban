@@ -13,7 +13,11 @@ const app = express()
 const PORT = process.env.PORT || 5000
 
 //mddlewares
-app.use(cors())
+app.use(cors({
+  origin: "https://realtime-collab-kanban.vercel.app", 
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}))
 app.use(express.json())
 
 //test route
